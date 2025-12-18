@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12/27 台南美食單車旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .map-container { height: 380px; width: 100%; z-index: 1; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+        .timeline-line { position: absolute; left: 28px; top: 10px; bottom: 0; width: 4px; background-color: #e2e8f0; z-index: 0; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="bg-blue-600 text-white p-6 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-wide"><i class="fa-solid fa-car-side mr-2"></i>台南單車美食旅</h1>
+                <p class="text-xs opacity-80 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>屏東出發 ➜ 台南吃爆</p>
+            </div>
+            <a href="#map-section" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm transition">
+                <i class="fa-solid fa-map mr-1"></i> 地圖
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto p-4">
+
+        <div class="bg-blue-50 border-l-4 border-blue-600 rounded-r-xl p-4 mb-8 shadow-sm">
+            <h2 class="font-bold text-blue-800 text-sm mb-1">
+                <i class="fa-solid fa-circle-info mr-2"></i>行程重點
+            </h2>
+            <p class="text-blue-700 text-xs leading-relaxed">
+                車停飯店後全程使用腳踏車（YouBike 2.0），避開市區塞車。Check-in 後有充足休息時間，儲備體力戰夜市。
+            </p>
+        </div>
+
+        <div class="relative px-2">
+            <div class="timeline-line"></div>
+
+            <div class="relative pl-20 mb-10">
+                <div class="absolute left-1 top-0 bg-gray-600 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold leading-tight">
+                    <span>10:00</span>
+                    <span class="text-[10px] font-normal">出發</span>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4 ml-2">
+                    <h3 class="font-bold text-gray-800">🚗 屏東海豐 出發</h3>
+                    <p class="text-gray-500 text-xs mt-1">預計車程約 50-60 分鐘</p>
+                    <p class="text-gray-600 text-sm mt-2">走國道3號接台86線快速道路，避開市區車潮。</p>
+                </div>
+            </div>
+
+            <div class="relative pl-20 mb-10 group">
+                <div class="absolute left-1 top-0 bg-orange-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold">
+                    <span>11:30</span>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden ml-2 hover:translate-y-[-2px] transition duration-300">
+                    <div class="h-32 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1594056276856-7872d8076628?q=80&w=800&auto=format&fit=crop" alt="牛肉湯" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent w-full p-2">
+                            <h3 class="text-white font-bold">午餐：梁記正老店牛肉湯</h3>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-600 text-sm mb-2"><i class="fa-solid fa-location-dot text-orange-500 mr-1"></i> 中西區 / 北區</p>
+                        <div class="bg-orange-50 text-orange-700 text-xs p-2 rounded">
+                            <strong>必點建議：</strong>新鮮溫體牛，湯頭鮮甜，建議先喝原味再加薑絲米酒。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative pl-20 mb-10">
+                <div class="absolute left-1 top-0 bg-blue-600 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold">
+                    <span>12:30</span>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4 ml-2 border-l-4 border-blue-400">
+                    <h3 class="font-bold text-gray-800">🅿️ 大立大飯店 (停車)</h3>
+                    <p class="text-gray-500 text-xs mt-1">Check-in 前先寄放行李與停車</p>
+                    <hr class="my-3 border-gray-100">
+                    <div class="flex items-center text-blue-600 font-bold text-sm">
+                        <i class="fa-solid fa-bicycle mr-2"></i> 交通模式切換
+                    </div>
+                    <p class="text-gray-600 text-xs mt-1">步行至赤崁樓站 (約3分鐘) 租借 YouBike。</p>
+                </div>
+            </div>
+
+            <div class="relative pl-20 mb-10">
+                <div class="absolute left-1 top-0 bg-red-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold">
+                    <span>13:00</span>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden ml-2">
+                    <div class="h-32 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop" alt="炸雞甜點" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent w-full p-2">
+                            <h3 class="text-white font-bold">國華街：炸雞 & 甜點巡禮</h3>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center shrink-0 mt-1 mr-3">
+                                <i class="fa-solid fa-drumstick-bite text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">洋食炸雞</h4>
+                                <p class="text-gray-500 text-xs">外皮酥脆多汁，灑上特製調粉的罪惡美味。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 text-yellow-600 rounded-full w-8 h-8 flex items-center justify-center shrink-0 mt-1 mr-3">
+                                <i class="fa-solid fa-circle-dot text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">名店生乳甜甜圈</h4>
+                                <p class="text-gray-500 text-xs">推薦：Perfe'dough (填餡) 或 脆皮鮮奶甜甜圈。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 text-yellow-600 rounded-full w-8 h-8 flex items-center justify-center shrink-0 mt-1 mr-3">
+                                <i class="fa-solid fa-cookie text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">白糖粿</h4>
+                                <p class="text-gray-500 text-xs">林家或游爸爸，熱熱吃口感最佳。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative pl-20 mb-10">
+                <div class="absolute left-1 top-0 bg-indigo-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold">
+                    <span>15:30</span>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4 ml-2 border-l-4 border-indigo-500">
+                    <h3 class="font-bold text-gray-800">🏨 返回飯店 Check-in</h3>
+                    <div class="mt-2 text-xs text-gray-600 bg-gray-100 p-2 rounded">
+                        <p><strong>充電 & 休息：</strong> 下午3點到6點是黃金休息時間。建議小睡一下，避開傍晚尖峰時刻，充飽電再戰夜市。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative pl-20 mb-8">
+                <div class="absolute left-1 top-0 bg-black text-white w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg z-10 border-4 border-white text-xs font-bold">
+                    <span>18:00</span>
+                </div>
+                <div class="bg-gray-900 text-white rounded-xl shadow-lg overflow-hidden ml-2">
+                    <div class="p-4 border-b border-gray-700">
+                        <h3 class="font-bold text-lg"><i class="fa-solid fa-moon text-yellow-400 mr-2"></i>花園夜市</h3>
+                        <p class="text-gray-400 text-xs mt-1">借用腳踏車前往 (約10分鐘車程)</p>
+                    </div>
+                    <div class="p-4 grid grid-cols-2 gap-3">
+                        <div class="bg-gray-800 p-2 rounded text-center">
+                            <span class="block text-xs text-gray-400">必吃</span>
+                            <span class="font-bold text-sm">二師兄滷味</span>
+                        </div>
+                        <div class="bg-gray-800 p-2 rounded text-center">
+                            <span class="block text-xs text-gray-400">必吃</span>
+                            <span class="font-bold text-sm">統大碳烤雞排</span>
+                        </div>
+                        <div class="bg-gray-800 p-2 rounded text-center">
+                            <span class="block text-xs text-gray-400">甜點</span>
+                            <span class="font-bold text-sm">春捲冰淇淋</span>
+                        </div>
+                        <div class="bg-gray-800 p-2 rounded text-center">
+                            <span class="block text-xs text-gray-400">小吃</span>
+                            <span class="font-bold text-sm">麻糬叔叔</span>
+                        </div>
+                    </div>
+                    <a href="https://www.google.com/maps/dir//%E5%8F%B0%E5%8D%97%E8%8A%B1%E5%9C%92%E5%A4%9C%E5%B8%82" target="_blank" class="block w-full text-center bg-blue-600 hover:bg-blue-700 py-3 text-sm font-bold transition">
+                        開啟導航
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="map-section" class="bg-white rounded-xl shadow-lg p-3 mt-4">
+            <h3 class="font-bold text-gray-700 mb-2 pl-2 border-l-4 border-green-500">🗺️ 路線地圖</h3>
+            <div id="map" class="map-container rounded-lg border border-gray-200"></div>
+        </div>
+
+    </main>
+
+    <footer class="text-center text-gray-400 text-xs py-8 bg-gray-100 mt-8">
+        <p>© 2025 Tainan Food Trip</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 初始化地圖 (中心點設在飯店與牛肉湯之間)
+        const map = L.map('map').setView([23.000, 120.205], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; OpenStreetMap'
+        }).addTo(map);
+
+        // 自訂圖標函數
+        const createIcon = (color, label) => {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>`,
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+        };
+
+        const locations = [
+            { name: "梁記正老店牛肉湯", lat: 23.0035, lng: 120.2065, color: "#f97316", desc: "11:30 午餐" },
+            { name: "台南大立大飯店", lat: 22.9985, lng: 120.2055, color: "#2563eb", desc: "停車/住宿/借車" },
+            { name: "國華街美食區", lat: 22.9950, lng: 120.1970, color: "#ef4444", desc: "炸雞/甜甜圈/白糖粿" },
+            { name: "花園夜市", lat: 23.0105, lng: 120.2005, color: "#000000", desc: "18:00 晚餐" }
+        ];
+
+        // 繪製路徑連線 (示意圖)
+        const latlngs = locations.map(loc => [loc.lat, loc.lng]);
+        const polyline = L.polyline(latlngs, {color: 'blue', weight: 2, dashArray: '5, 5', opacity: 0.5}).addTo(map);
+
+        // 加入標記
+        locations.forEach(loc => {
+            L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>${loc.desc}`)
+                .openPopup();
+        });
+
+        // 自動調整地圖範圍以顯示所有點
+        map.fitBounds(polyline.getBounds(), {padding: [30, 30]});
+
+    </script>
+</body>
+</html>
